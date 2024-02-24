@@ -97,7 +97,7 @@ function App() {
       </div>
       <Board squares={squares} onClick={handleClick} playerXName={playerXName} playerOName={playerOName} />
       <div className="score">
-        Score: X ({score.X}) - O ({score.O})
+        Score: {playerXName || 'Player X'} ({score.X}) - {playerOName || 'Player O'} ({score.O})
       </div>
     </div>
   );
