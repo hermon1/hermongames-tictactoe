@@ -1,4 +1,3 @@
-// Board.js
 import React from 'react';
 import Square from './Square';
 
@@ -8,6 +7,7 @@ function Board(props) {
       <Square
         value={props.squares[i]}
         onClick={() => props.onClick(i)}
+        className={props.squares[i] === 'X' ? 'X' : props.squares[i] === 'O' ? 'O' : ''}
       />
     );
   }

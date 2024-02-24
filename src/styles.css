@@ -26,6 +26,15 @@
     background-color: #f0f0f0;
   }
   
+  /* Add specific color styles for X and O */
+  .square.X {
+    color: red;
+  }
+  
+  .square.O {
+    color: green;
+  }
+  
   .App {
     text-align: center;
   }
