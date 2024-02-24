@@ -1,3 +1,4 @@
+// App.js
 import React, { useState } from 'react';
 import Board from './Board';
 import Celebration from './Celebration';
@@ -24,85 +25,80 @@ function calculateWinner(squares) {
 }
 
 function App() {
-  // Example state for the squares array, player names, current player, wins, and losses
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [playerXName, setPlayerXName] = useState('');
   const [playerOName, setPlayerOName] = useState('');
   const [xIsNext, setXIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [winsX, setWinsX] = useState(0);
-  const [winsO, setWinsO] = useState(0);
+  const [score, setScore] = useState({ X: 0, O: 0 });
 
   function handleClick(i) {
+    if (winner || squares[i]) return;
+
     const newSquares = squares.slice();
-    if (calculateWinner(newSquares) || newSquares[i]) {
-      // If there's a winner or the square is already filled, do nothing
-      return;
-    }
     newSquares[i] = xIsNext ? 'X' : 'O';
     setSquares(newSquares);
     setXIsNext(!xIsNext);
-    const winner = calculateWinner(newSquares);
-    if (winner) {
-      setWinner(winner);
-      if (winner === 'X') {
-        setWinsX(winsX + 1);
-      } else {
-        setWinsO(winsO + 1);
-      }
+
+    const winnerPlayer = calculateWinner(newSquares);
+    if (winnerPlayer) {
+      setWinner(winnerPlayer);
+      setScore(prevScore => ({
+        ...prevScore,
+        [winnerPlayer]: prevScore[winnerPlayer] + 1,
+      }));
     }
   }
 
-  function resetGame() {
+  function handleRematch() {
     setSquares(Array(9).fill(null));
+    setXIsNext(true);
     setWinner(null);
   }
 
   return (
     <div className="App">
       <h1>Tic Tac Toe</h1>
-      <div>
-        <label>
-          Player X ({playerXName || 'Player X'}):{' '}
-          <input
-            type="text"
-            value={playerXName}
-            onChange={(e) => setPlayerXName(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Player O ({playerOName || 'Player O'}):{' '}
-          <input
-            type="text"
-            value={playerOName}
-            onChange={(e) => setPlayerOName(e.target.value)}
-          />
-        </label>
-      </div>
-      {winner && (
-        <div className="score">
-          <p>
-            {playerXName || 'Player X'} Wins: {winsX}
-          </p>
-          <p>
-            {playerOName || 'Player O'} Wins: {winsO}
-          </p>
-        </div>
+      {!winner ? (
+        <>
+          <div>
+            <label>
+              Player X (X):{' '}
+              <input
+                type="text"
+                value={playerXName}
+                onChange={(e) => setPlayerXName(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Player O (O):{' '}
+              <input
+                type="text"
+                value={playerOName}
+                onChange={(e) => setPlayerOName(e.target.value)}
+              />
+            </label>
+          </div>
+        </>
+      ) : (
+        <Celebration winner={winner === 'X' ? playerXName : playerOName} />
       )}
       <div className="status">
-        {winner ? (
-          <>
-            <p>{winner === 'X' ? `${playerXName || 'Player X'} wins!` : `${playerOName || 'Player O'} wins!`}</p>
-            <button onClick={resetGame}>Rematch</button>
-          </>
+        {!winner ? (
+          `Next player: ${xIsNext ? playerXName : playerOName}`
         ) : (
-          <p>Next player: {xIsNext ? `${playerXName || 'Player X'}` : `${playerOName || 'Player O'}`}</p>
+          <>
+            <div>{winner} wins!</div>
+            <button onClick={handleRematch}>Rematch</button>
+          </>
         )}
       </div>
       <Board squares={squares} onClick={handleClick} />
-      {winner && <Celebration winner={winner === 'X' ? playerXName || 'Player X' : playerOName || 'Player O'} />}
+      <div className="score">
+        Score: X ({score.X}) - O ({score.O})
+      </div>
     </div>
   );
 }
