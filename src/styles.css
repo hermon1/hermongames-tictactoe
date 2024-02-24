@@ -1,0 +1,65 @@
+/* styles.css */
+
+.board {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: auto;
+  }
+  
+  .row {
+    display: flex;
+  }
+  
+  .square {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #999;
+    font-size: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .square:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .App {
+    text-align: center;
+  }
+  
+  .status {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  
+  .restart {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .restart:hover {
+    background-color: #0056b3;
+  }
+  
+  
+/* Add this keyframe animation for celebration */
+@keyframes celebrate {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(10deg); }
+    50% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+  }
+  
+  /* Add this class to apply the celebration animation */
+  .celebrate {
+    animation: celebrate 0.5s ease-in-out;
+  }
