@@ -63,7 +63,7 @@ function App() {
         <>
           <div>
             <label>
-              Player X (X):{' '}
+              Player X ({playerXName || 'Player X'}):{' '}
               <input
                 type="text"
                 value={playerXName}
@@ -73,7 +73,7 @@ function App() {
           </div>
           <div>
             <label>
-              Player O (O):{' '}
+              Player O ({playerOName || 'Player O'}):{' '}
               <input
                 type="text"
                 value={playerOName}
@@ -90,12 +90,12 @@ function App() {
           `Next player: ${xIsNext ? playerXName : playerOName}`
         ) : (
           <>
-            <div>{winner} wins!</div>
+            <div>{winner === 'X' ? playerXName : playerOName} wins!</div>
             <button onClick={handleRematch}>Rematch</button>
           </>
         )}
       </div>
-      <Board squares={squares} onClick={handleClick} />
+      <Board squares={squares} onClick={handleClick} playerXName={playerXName} playerOName={playerOName} />
       <div className="score">
         Score: X ({score.X}) - O ({score.O})
       </div>
