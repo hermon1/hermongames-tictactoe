@@ -24,6 +24,10 @@ function calculateWinner(squares) {
   return null;
 }
 
+function isBoardFull(squares) {
+  return squares.every(square => square !== null);
+}
+
 function App() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [playerXName, setPlayerXName] = useState('');
@@ -47,6 +51,8 @@ function App() {
         ...prevScore,
         [winnerPlayer]: prevScore[winnerPlayer] + 1,
       }));
+    } else if (isBoardFull(newSquares)) {
+      setWinner('Draw');
     }
   }
 
@@ -83,11 +89,13 @@ function App() {
           </div>
         </>
       ) : (
-        <Celebration winner={winner === 'X' ? playerXName : playerOName} />
+        <Celebration winner={winner} />
       )}
       <div className="status">
         {!winner ? (
           `Next player: ${xIsNext ? playerXName : playerOName}`
+        ) : winner === 'Draw' ? (
+          <button onClick={handleRematch}>Rematch</button>
         ) : (
           <>
             <div>{winner === 'X' ? playerXName : playerOName} wins!</div>
