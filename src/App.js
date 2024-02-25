@@ -33,7 +33,7 @@ function App() {
   const [playerOName, setPlayerOName] = useState('');
   const [xIsNext, setXIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [score, setScore] = useState({ X: 0, O: 0 });
+  const [score, setScore] = useState({ X: 0, O: 0, Draw: 0 }); // Add Draw score
 
   function handleClick(i) {
     if (winner || squares[i]) return;
@@ -52,6 +52,10 @@ function App() {
       }));
     } else if (isBoardFull(newSquares)) {
       setWinner('Draw');
+      setScore(prevScore => ({
+        ...prevScore,
+        Draw: prevScore.Draw + 1, // Increment draw score
+      }));
     }
   }
 
@@ -100,12 +104,12 @@ function App() {
         <button onClick={handleRematch}>Rematch</button>
       ) : (
         <>
-          <div>{playerXName && winner === 'X' ? playerXName : playerOName && winner === 'O' ? playerOName : (winner === 'X' ? 'Player X' : 'Player O')} wins!</div>
+          <div>{winner === 'X' ? playerXName : playerOName} wins!</div>
           <button onClick={handleRematch}>Rematch</button>
         </>
       )}
       <div className="score">
-        Score: <span style={{ color: 'black' }}>{playerXName || 'Player X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'Player O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span>
+        Score: <span style={{ color: 'black' }}>{playerXName || 'Player X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'Player O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span> - Draws: <span style={{ color: 'black' }}>{score.Draw}</span>
       </div>
     </div>
   );
