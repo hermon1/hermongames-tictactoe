@@ -105,7 +105,7 @@ function App() {
         </>
       )}
       <div className="score">
-        Score: <span style={{ color: 'black' }}>{playerXName ? <span style={{ color: 'red' }}>{playerXName}</span> : 'Player X'} ({score.X})</span> - <span style={{ color: 'black' }}>{playerOName ? <span style={{ color: 'green' }}>{playerOName}</span> : 'Player O'} ({score.O})</span>
+        Score: <span style={{ color: 'black' }}>{playerXName || 'Player X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'Player O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span>
       </div>
     </div>
   );
