@@ -72,3 +72,44 @@
   .celebrate {
     animation: celebrate 0.5s ease-in-out;
   }
+
+
+  .player-label {
+    margin-bottom: 10px;
+  }
+  
+  .player-label label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .player-label input {
+    margin-left: 5px;
+  }
+  
+  .player-label .playerX {
+    color: red;
+  }
+  
+  .player-label .playerO {
+    color: green;
+  }
+  
+  .score {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  
+  .score .playerX {
+    color: red;
+  }
+  
+  .score .playerO {
+    color: green;
+  }
+  
+  /* Style the parentheses */
+  .score .parentheses {
+    color: black;
+  }
+  

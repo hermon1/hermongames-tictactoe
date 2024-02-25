@@ -1,4 +1,3 @@
-// App.js
 import React, { useState } from 'react';
 import Board from './Board';
 import Celebration from './Celebration';
@@ -64,11 +63,11 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Tic Tac Toe</h1>
+      <h1>Hermon Tic Tac Toe</h1>
       {!winner ? (
         <>
-          <div>
-            <label>
+          <div className="player-label">
+            <label style={{ color: 'red' }}>
               Player X ({playerXName || 'Player X'}):{' '}
               <input
                 type="text"
@@ -77,8 +76,8 @@ function App() {
               />
             </label>
           </div>
-          <div>
-            <label>
+          <div className="player-label">
+            <label style={{ color: 'green' }}>
               Player O ({playerOName || 'Player O'}):{' '}
               <input
                 type="text"
@@ -92,20 +91,21 @@ function App() {
         <Celebration winner={winner} />
       )}
       <div className="status">
-        {!winner ? (
-          `Next player: ${xIsNext ? playerXName : playerOName}`
-        ) : winner === 'Draw' ? (
-          <button onClick={handleRematch}>Rematch</button>
-        ) : (
-          <>
-            <div>{winner === 'X' ? playerXName : playerOName} wins!</div>
-            <button onClick={handleRematch}>Rematch</button>
-          </>
-        )}
+        <span style={{ color: 'black' }}>Next player: </span>
+        <span style={{ color: xIsNext ? 'red' : 'green' }}>{xIsNext ? playerXName : playerOName}</span>
       </div>
-      <Board squares={squares} onClick={handleClick} playerXName={playerXName} playerOName={playerOName} />
+      {!winner ? (
+        <Board squares={squares} onClick={handleClick} playerXName={playerXName} playerOName={playerOName} />
+      ) : winner === 'Draw' ? (
+        <button onClick={handleRematch}>Rematch</button>
+      ) : (
+        <>
+          <div>{winner === 'X' ? playerXName : playerOName} wins!</div>
+          <button onClick={handleRematch}>Rematch</button>
+        </>
+      )}
       <div className="score">
-        Score: {playerXName || 'Player X'} ({score.X}) - {playerOName || 'Player O'} ({score.O})
+        Score: <span style={{ color: 'red' }}>{playerXName || 'Player X'} ({score.X})</span> - <span style={{ color: 'green' }}>{playerOName || 'Player O'} ({score.O})</span>
       </div>
     </div>
   );
