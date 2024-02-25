@@ -100,12 +100,12 @@ function App() {
         <button onClick={handleRematch}>Rematch</button>
       ) : (
         <>
-          <div>{winner === 'X' ? playerXName : playerOName} wins!</div>
+          <div>{playerXName && winner === 'X' ? playerXName : playerOName && winner === 'O' ? playerOName : (winner === 'X' ? 'Player X' : 'Player O')} wins!</div>
           <button onClick={handleRematch}>Rematch</button>
         </>
       )}
       <div className="score">
-        Score: <span style={{ color: 'red' }}>{playerXName || 'Player X'} ({score.X})</span> - <span style={{ color: 'green' }}>{playerOName || 'Player O'} ({score.O})</span>
+        Score: <span style={{ color: 'black' }}>{playerXName ? <span style={{ color: 'red' }}>{playerXName}</span> : 'Player X'} ({score.X})</span> - <span style={{ color: 'black' }}>{playerOName ? <span style={{ color: 'green' }}>{playerOName}</span> : 'Player O'} ({score.O})</span>
       </div>
     </div>
   );
