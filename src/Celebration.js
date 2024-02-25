@@ -31,7 +31,7 @@ function Celebration({ winner }) {
               width={window.innerWidth}
               height={window.innerHeight}
               recycle={false} // Prevents confetti from reappearing after falling off-screen
-              timeout={20000} // Duration for confetti (10 seconds)
+              timeout={10000} // Duration for confetti (10 seconds)
             />
           </div>
           <div className="player-wrapper">
