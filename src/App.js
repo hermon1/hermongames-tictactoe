@@ -90,7 +90,7 @@ function App() {
           </div>
         </>
       ) : (
-        <Celebration winner={winner} />
+        <Celebration winner={winner === 'X' ? playerXName : winner === 'O' ? playerOName : null} />
       )}
       {!winner ? (
         <div className="status">
@@ -103,10 +103,7 @@ function App() {
       ) : winner === 'Draw' ? (
         <button className="rematch-button" onClick={handleRematch}>Rematch</button>  // Styled rematch button
       ) : (
-        <>
-          <div>{winner === 'X' ? playerXName : playerOName} wins!</div>
-          <button className="rematch-button" onClick={handleRematch}>Rematch</button>
-        </>
+        <button className="rematch-button" onClick={handleRematch}>Rematch</button>
       )}
       <div className="score">
         Score: <span style={{ color: 'black' }}>{playerXName || 'Player X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'Player O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span> - Draws: <span style={{ color: 'black' }}>{score.Draw}</span>
