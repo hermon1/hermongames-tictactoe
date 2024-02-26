@@ -70,7 +70,7 @@ function App() {
         <>
           <div className="player-label">
             <label style={{ color: 'red' }}>
-              Player X ({playerXName || 'Player X'}):{' '}
+              Player X ({playerXName || 'X'}):{' '}
               <input
                 type="text"
                 value={playerXName}
@@ -80,7 +80,7 @@ function App() {
           </div>
           <div className="player-label">
             <label style={{ color: 'green' }}>
-              Player O ({playerOName || 'Player O'}):{' '}
+              Player O ({playerOName || 'O'}):{' '}
               <input
                 type="text"
                 value={playerOName}
@@ -90,12 +90,12 @@ function App() {
           </div>
         </>
       ) : winner !== 'Draw' ? (
-        <Celebration winner={winner === 'X' ? playerXName : playerOName} />
+        <Celebration winner={winner === 'X' ? playerXName || 'X' : playerOName || 'O'} />
       ) : null}
       {!winner ? (
         <div className="status">
           <span style={{ color: 'black' }}>Next player: </span>
-          <span style={{ color: xIsNext ? 'red' : 'green' }}>{xIsNext ? playerXName : playerOName}</span>
+          <span style={{ color: xIsNext ? 'red' : 'green' }}>{xIsNext ? playerXName || 'X' : playerOName || 'O'}</span>
         </div>
       ) : null}
       {!winner ? (
@@ -106,7 +106,7 @@ function App() {
         <button className="rematch-button" onClick={handleRematch}>Rematch</button>
       )}
       <div className="score">
-        Score: <span style={{ color: 'black' }}>{playerXName || 'Player X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'Player O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span> - Draws: <span style={{ color: 'black' }}>{score.Draw}</span>
+        Score: <span style={{ color: 'black' }}>{playerXName || 'X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span> - Draws: <span style={{ color: 'black' }}>{score.Draw}</span>
         {winner === 'Draw' && <div>It's a draw!</div>}
       </div>
     </div>
