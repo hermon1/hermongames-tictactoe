@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Board from './Board';
-import Celebration from './Celebration';
+import Celebration from './Celebration'; // Add import statement for Celebration component
 import './styles.css'; // Import the CSS file
 
 function calculateWinner(squares) {
@@ -89,9 +89,9 @@ function App() {
             </label>
           </div>
         </>
-      ) : (
-        <Celebration winner={winner === 'X' ? playerXName : winner === 'O' ? playerOName : null} />
-      )}
+      ) : winner !== 'Draw' ? (
+        <Celebration winner={winner === 'X' ? playerXName : playerOName} />
+      ) : null}
       {!winner ? (
         <div className="status">
           <span style={{ color: 'black' }}>Next player: </span>
@@ -101,12 +101,13 @@ function App() {
       {!winner ? (
         <Board squares={squares} onClick={handleClick} playerXName={playerXName} playerOName={playerOName} />
       ) : winner === 'Draw' ? (
-        <button className="rematch-button" onClick={handleRematch}>Rematch</button>  // Styled rematch button
+        <button className="rematch-button" onClick={handleRematch}>Rematch</button>
       ) : (
         <button className="rematch-button" onClick={handleRematch}>Rematch</button>
       )}
       <div className="score">
         Score: <span style={{ color: 'black' }}>{playerXName || 'Player X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'Player O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span> - Draws: <span style={{ color: 'black' }}>{score.Draw}</span>
+        {winner === 'Draw' && <div>It's a draw!</div>}
       </div>
     </div>
   );
