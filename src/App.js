@@ -33,7 +33,7 @@ function App() {
   const [playerOName, setPlayerOName] = useState('');
   const [xIsNext, setXIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [score, setScore] = useState({ X: 0, O: 0 });
+  const [score, setScore] = useState({ X: 0, O: 0, Draw: 0 }); // Initialize score with draw count
 
   function handleClick(i) {
     if (winner || squares[i]) return;
@@ -46,12 +46,14 @@ function App() {
     const winnerPlayer = calculateWinner(newSquares);
     if (winnerPlayer) {
       setWinner(winnerPlayer);
-      setScore(prevScore => ({
-        ...prevScore,
-        [winnerPlayer]: prevScore[winnerPlayer] + 1,
-      }));
+      if (winnerPlayer === 'Draw') {
+        setScore(prevScore => ({ ...prevScore, Draw: prevScore.Draw + 1 }));
+      } else {
+        setScore(prevScore => ({ ...prevScore, [winnerPlayer]: prevScore[winnerPlayer] + 1 }));
+      }
     } else if (isBoardFull(newSquares)) {
       setWinner('Draw');
+      setScore(prevScore => ({ ...prevScore, Draw: prevScore.Draw + 1 }));
     }
   }
 
@@ -60,8 +62,6 @@ function App() {
     setXIsNext(true);
     setWinner(null);
   }
-
-  const winnerName = winner === 'X' ? playerXName : winner === 'O' ? playerOName : winner === 'Draw' ? 'Draw' : null;
 
   return (
     <div className="App">
@@ -90,24 +90,26 @@ function App() {
           </div>
         </>
       ) : (
-        <Celebration winner={winnerName} />
+        <Celebration winner={winner} />
       )}
-      <div className="status">
-        <span style={{ color: 'black' }}>Next player: </span>
-        <span style={{ color: xIsNext ? 'red' : 'green' }}>{xIsNext ? playerXName : playerOName}</span>
-      </div>
+      {!winner ? (
+        <div className="status">
+          <span style={{ color: 'black' }}>Next player: </span>
+          <span style={{ color: xIsNext ? 'red' : 'green' }}>{xIsNext ? playerXName : playerOName}</span>
+        </div>
+      ) : null}
       {!winner ? (
         <Board squares={squares} onClick={handleClick} playerXName={playerXName} playerOName={playerOName} />
       ) : winner === 'Draw' ? (
         <button className="rematch-button" onClick={handleRematch}>Rematch</button>  // Styled rematch button
       ) : (
         <>
-          <div>{winnerName} wins!</div>
-          <button className="rematch-button" onClick={handleRematch}>Rematch</button>  
+          <div>{winner === 'X' ? playerXName : playerOName} wins!</div>
+          <button className="rematch-button" onClick={handleRematch}>Rematch</button>
         </>
       )}
       <div className="score">
-        Score: <span style={{ color: 'black' }}>{playerXName || 'Player X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'Player O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span>
+        Score: <span style={{ color: 'black' }}>{playerXName || 'Player X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'Player O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span> - Draws: <span style={{ color: 'black' }}>{score.Draw}</span>
       </div>
     </div>
   );
