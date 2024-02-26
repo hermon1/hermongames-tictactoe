@@ -61,6 +61,8 @@ function App() {
     setWinner(null);
   }
 
+  const winnerName = winner === 'X' ? playerXName : winner === 'O' ? playerOName : winner === 'Draw' ? 'Draw' : null;
+
   return (
     <div className="App">
       <h1>Hermon Tic Tac Toe</h1>
@@ -88,7 +90,7 @@ function App() {
           </div>
         </>
       ) : (
-        <Celebration winner={winner} />
+        <Celebration winner={winnerName} />
       )}
       <div className="status">
         <span style={{ color: 'black' }}>Next player: </span>
@@ -100,7 +102,7 @@ function App() {
         <button className="rematch-button" onClick={handleRematch}>Rematch</button>  // Styled rematch button
       ) : (
         <>
-          <div>{playerXName && winner === 'X' ? playerXName : playerOName && winner === 'O' ? playerOName : (winner === 'X' ? 'Player X' : 'Player O')} wins!</div>
+          <div>{winnerName} wins!</div>
           <button className="rematch-button" onClick={handleRematch}>Rematch</button>  
         </>
       )}
