@@ -107,7 +107,7 @@ function App() {
       )}
       <div className="score">
         Score: <span style={{ color: 'black' }}>{playerXName || 'X'} (<span style={{ color: 'red' }}>{score.X}</span>)</span> - <span style={{ color: 'black' }}>{playerOName || 'O'} (<span style={{ color: 'green' }}>{score.O}</span>)</span> - Draws: <span style={{ color: 'black' }}>{score.Draw}</span>
-        {winner === 'Draw' && <div>It's a draw!</div>}
+        {winner === 'Draw' && <div className="winner-message">It's a draw!</div>}
       </div>
     </div>
   );
