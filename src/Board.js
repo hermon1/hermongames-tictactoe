@@ -1,13 +1,14 @@
 import React from 'react';
 import Square from './Square';
 
-function Board(props) {
+function Board({ squares, onClick, winningLine }) {
   function renderSquare(i) {
+    const isWinningSquare = winningLine && winningLine.includes(i); // Check if the square is part of the winning line
     return (
       <Square
-        value={props.squares[i]}
-        onClick={() => props.onClick(i)}
-        className={props.squares[i] === 'X' ? 'X' : props.squares[i] === 'O' ? 'O' : ''}
+        value={squares[i]}
+        onClick={() => onClick(i)}
+        className={`${squares[i] === 'X' ? 'X' : squares[i] === 'O' ? 'O' : ''} ${isWinningSquare ? 'winning-square' : ''}`}
       />
     );
   }

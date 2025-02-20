@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import Board from './Board';
 import Celebration from './Celebration';
+import Countdown from './Countdown'; // Import the Countdown component
 import useMoveHandler from './MoveHandler'; // Import new feature
+import WinningLine from './WinningLine'; // Import new feature
 import './styles.css';
 
 function calculateWinner(squares) {
   const lines = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], 
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], 
-    [0, 4, 8], [2, 4, 6]
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+    [0, 4, 8], [2, 4, 6] // Diagonals
   ];
   
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a]; // Return X or O as the winner
+      return { winner: squares[a], winningLine: lines[i] }; // Return winner & winning squares
     }
   }
-  return null; // No winner yet
+  return null;
 }
 
 function App() {
@@ -25,54 +27,52 @@ function App() {
   const [playerXName, setPlayerXName] = useState('');
   const [playerOName, setPlayerOName] = useState('');
   const [xIsNext, setXIsNext] = useState(true);
-  const [winner, setWinner] = useState(null);
+  const [winnerInfo, setWinnerInfo] = useState(null);
   const [score, setScore] = useState({ X: 0, O: 0 });
 
   const { handleMove, countdown, resetHandler } = useMoveHandler(
-    squares, setSquares, xIsNext, setXIsNext, setWinner, setScore
+    squares, setSquares, xIsNext, setXIsNext, (winner) => {
+      setWinnerInfo(winner); // Set winner + line index
+      setScore(prevScore => ({
+        ...prevScore,
+        [winner.winner]: (prevScore?.[winner.winner] || 0) + 1
+      }));
+    }, 
+    setScore
   );
 
   function handleClick(i) {
-    if (winner || squares[i]) return; // Ignore clicks on occupied or finished game
+    if (winnerInfo || squares[i]) return;
 
     const newSquares = [...squares];
     newSquares[i] = xIsNext ? 'X' : 'O';
 
     setSquares(newSquares);
-    handleMove(i); // Track move **before** switching turns
+    handleMove(i);
 
-    const winnerPlayer = calculateWinner(newSquares);
-    if (winnerPlayer) {
-      setWinner(winnerPlayer);
+    const result = calculateWinner(newSquares);
+    if (result) {
+      setWinnerInfo(result);
       setScore(prevScore => ({
         ...prevScore,
-        [winnerPlayer]: (prevScore?.[winnerPlayer] || 0) + 1
-      }));
-    } else if (newSquares.every(square => square !== null)) {
-      // 🚨 Force a winner if no moves remain (last player loses)
-      const loser = xIsNext ? 'X' : 'O';
-      const winnerAuto = loser === 'X' ? 'O' : 'X';
-      setWinner(winnerAuto);
-      setScore(prevScore => ({
-        ...prevScore,
-        [winnerAuto]: (prevScore?.[winnerAuto] || 0) + 1
+        [result.winner]: (prevScore?.[result.winner] || 0) + 1
       }));
     } else {
-      setXIsNext(!xIsNext); // Ensure turn switches only if game isn't over
+      setXIsNext(!xIsNext);
     }
   }
 
   function handleRematch() {
     setSquares(Array(9).fill(null));
-    setWinner(null);
-    setXIsNext(true); // Reset turn to X
-    resetHandler(); // Correctly reset move history and countdown
+    setWinnerInfo(null);
+    setXIsNext(true);
+    resetHandler();
   }
 
   return (
     <div className="App">
       <h1>Hermon Tic Tac Toe</h1>
-      {!winner ? (
+      {!winnerInfo ? (
         <>
           <div className="player-label">
             <label style={{ color: 'red' }}>
@@ -88,18 +88,21 @@ function App() {
           </div>
         </>
       ) : (
-        <Celebration winner={winner === 'X' ? playerXName || 'X' : playerOName || 'O'} />
+        <Celebration winner={winnerInfo?.winner === 'X' ? playerXName || 'X' : playerOName || 'O'} />
       )}
 
-      {!winner && countdown !== null && (
-        <div className="countdown">Move fast! {countdown} seconds left!</div>
+      {!winnerInfo && countdown !== null && (
+        <Countdown timeLeft={countdown} /> 
       )}
 
-      {!winner ? (
-        <Board squares={squares} onClick={handleClick} playerXName={playerXName} playerOName={playerOName} />
-      ) : (
-        <button className="rematch-button" onClick={handleRematch}>Rematch</button>
-      )}
+      <div className="board-container">
+        {!winnerInfo ? (
+          <Board squares={squares} onClick={handleClick} playerXName={playerXName} playerOName={playerOName} winningLine={winnerInfo?.winningLine} />
+        ) : (
+          <button className="rematch-button" onClick={handleRematch}>Rematch</button>
+        )}
+        {winnerInfo && <WinningLine winningLine={winnerInfo.winningLine} />}
+      </div>
 
       <div className="score">
         Score: 
