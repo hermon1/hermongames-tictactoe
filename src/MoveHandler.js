@@ -1,18 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext, setWinner, setScore) {
   const [moveHistory, setMoveHistory] = useState([]); // Store all moves
   const [countdown, setCountdown] = useState(null);
   const [timer, setTimer] = useState(null); // Timer reference
 
-  useEffect(() => {
-    // Only start the countdown if 3 moves have been made by each player and no winner yet
-    if (moveHistory.length >= 6 && countdown === null) {
-      startCountdown();
-    }
-  }, [moveHistory]);
-
-  function startCountdown() {
+  // **Wrap startCountdown in useCallback to prevent re-creation in useEffect**
+  const startCountdown = useCallback(() => {
     if (countdown !== null || moveHistory.length < 6) return; // Prevent early countdown
     setCountdown(3);
 
@@ -32,7 +26,14 @@ export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext,
     }, 1000);
 
     setTimer(newTimer);
-  }
+  }, [countdown, moveHistory.length, setWinner, xIsNext, setScore]); // ✅ Added dependencies
+
+  useEffect(() => {
+    // Only start the countdown if 3 moves have been made by each player and no winner yet
+    if (moveHistory.length >= 6 && countdown === null) {
+      startCountdown();
+    }
+  }, [moveHistory, countdown, startCountdown]); // ✅ Added missing dependencies
 
   function handleMove(i) {
     if (squares[i]) return; // Prevent moves on occupied squares
