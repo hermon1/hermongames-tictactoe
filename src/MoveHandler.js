@@ -14,6 +14,7 @@ export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext,
       setCountdown(prev => {
         if (prev === 1) {
           clearInterval(newTimer);
+          if (!squares.includes(null)) return; // ✅ Prevent winner updates when game is over
           setWinner(xIsNext ? 'O' : 'X'); // Opponent wins if no move is made
           setScore(prevScore => ({
             ...prevScore,
@@ -26,10 +27,9 @@ export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext,
     }, 1000);
 
     setTimer(newTimer);
-  }, [countdown, moveHistory.length, setWinner, xIsNext, setScore]); // ✅ Added dependencies
+  }, [countdown, moveHistory.length, setWinner, xIsNext, setScore, squares]); // ✅ Added dependencies
 
   useEffect(() => {
-    // Only start the countdown if 3 moves have been made by each player and no winner yet
     if (moveHistory.length >= 6 && countdown === null) {
       startCountdown();
     }

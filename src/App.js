@@ -32,11 +32,13 @@ function App() {
 
   const { handleMove, countdown, resetHandler } = useMoveHandler(
     squares, setSquares, xIsNext, setXIsNext, (winner) => {
-      setWinnerInfo(winner); // Set winner + line index
-      setScore(prevScore => ({
-        ...prevScore,
-        [winner.winner]: (prevScore?.[winner.winner] || 0) + 1
-      }));
+      if (!winnerInfo) { // ✅ Prevent multiple updates
+        setWinnerInfo(winner); 
+        setScore(prevScore => ({
+          ...prevScore,
+          [winner.winner]: (prevScore?.[winner.winner] || 0) + 1
+        }));
+      }
     }, 
     setScore
   );
@@ -51,7 +53,7 @@ function App() {
     handleMove(i);
 
     const result = calculateWinner(newSquares);
-    if (result) {
+    if (result && !winnerInfo) { // ✅ Ensure winner is only stored once
       setWinnerInfo(result);
       setScore(prevScore => ({
         ...prevScore,
