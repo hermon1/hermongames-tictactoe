@@ -1,22 +1,18 @@
 /* styles.css */
-
-/* styles.css */
 .board {
   display: flex;
   flex-direction: column;
   width: 300px;
-  height: 300px; /* ✅ Add height to match width for accurate % positioning */
+  height: 300px; /* Already set, keeps board square */
   margin: auto;
-  position: relative; /* ✅ Already added, confirms positioning context */
+  position: relative; /* Positioning context for WinningLine */
+  overflow: hidden; /* ✅ Prevent any overflow from affecting layout */
 }
 
-.board-container {
-  position: relative; /* ✅ Optional: ensures container doesn’t override board positioning */
-}
-
-/* Rest of your styles remain unchanged */
 .row {
   display: flex;
+  flex: 1; /* ✅ Ensure each row takes equal space (100px) */
+  min-height: 0; /* ✅ Prevent flex shrinkage issues */
 }
 
 .square {
@@ -28,25 +24,28 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  flex: 1; /* ✅ Ensure squares stay fixed in size */
+  box-sizing: border-box; /* ✅ Include border in 100px size */
+}
+
+.board-container {
+  position: relative;
+}
+
+/* Rest of your styles remain unchanged */
+.square:hover {
+  background-color: #f0f0f0;
+}
+
+.square.X {
+  color: red;
+}
+
+.square.O {
+  color: green;
 }
 
 /* ... rest of your styles ... */
-
-/* ... rest of your styles remain unchanged ... */
-  
-  .square:hover {
-    background-color: #f0f0f0;
-  }
-  
-  /* Add specific color styles for X and O */
-  .square.X {
-    color: red;
-  }
-  
-  .square.O {
-    color: green;
-  }
-  
   .App {
     text-align: center;
   }
