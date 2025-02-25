@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import Confetti from 'react-confetti';
 import './Celebration.css';
@@ -6,31 +6,46 @@ import nipSong from './music/nip.mp3';
 import nipviclap from './music/nipviclap.mp3';
 
 function Celebration({ winner }) {
+  const audioRef = useRef(null); // Use ref to persist audio object across renders
+
   useEffect(() => {
-    let audio;
-    // Check if winner includes 'X' (either as 'X' or playerXName containing 'X')
-    if (winner === 'X' || winner.includes('X')) {
-      audio = new Audio(nipSong);
-    } else {
-      audio = new Audio(nipviclap);
+    // Clean up any existing audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
     }
 
-    // Attempt to play audio
+    // Create new audio instance
+    audioRef.current = new Audio(winner === 'X' || winner.includes('X') ? nipSong : nipviclap);
+
     const playAudio = async () => {
       try {
-        await audio.play();
+        await audioRef.current.play();
         console.log('Audio playing:', winner.includes('X') ? 'nipSong' : 'nipviclap');
       } catch (error) {
-        console.error('Error playing audio:', error);
+        console.error('Initial play failed:', error);
+        // Retry after a short delay for Chrome iOS
+        setTimeout(async () => {
+          try {
+            await audioRef.current.play();
+            console.log('Retry successful:', winner.includes('X') ? 'nipSong' : 'nipviclap');
+          } catch (retryError) {
+            console.error('Retry failed:', retryError);
+          }
+        }, 100);
       }
     };
 
     playAudio();
 
     return () => {
-      if (audio) {
-        audio.pause();
-        audio.currentTime = 0; // Reset to start for next play
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current.src = ''; // Clear source to fully stop
+        audioRef.current = null; // Nullify reference
+        console.log('Audio cleaned up');
       }
     };
   }, [winner]);
