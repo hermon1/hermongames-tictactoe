@@ -14,6 +14,7 @@ function App() {
   const [winner, setWinner] = useState(null);
   const [score, setScore] = useState({ X: 0, O: 0 });
   const [showCelebration, setShowCelebration] = useState(false);
+  const [audioUnlocked, setAudioUnlocked] = useState(false); // New state to track audio unlock
 
   const { handleMove, countdown, resetHandler } = useMoveHandler(
     squares,
@@ -26,6 +27,16 @@ function App() {
 
   function handleClick(i) {
     if (winner || squares[i]) return;
+
+    // Unlock audio on first click if not already unlocked
+    if (!audioUnlocked) {
+      const audio = new Audio(); // Dummy audio to unlock context
+      audio.play().then(() => {
+        setAudioUnlocked(true);
+        console.log('Audio context unlocked');
+      }).catch(error => console.error('Error unlocking audio:', error));
+    }
+
     handleMove(i);
   }
 
@@ -35,6 +46,7 @@ function App() {
     setXIsNext(true);
     setShowCelebration(false);
     resetHandler();
+    // Don’t reset audioUnlocked; it persists across games
   }
 
   useEffect(() => {
@@ -69,7 +81,6 @@ function App() {
 
           <div className="board-container">
             <Board squares={squares} onClick={handleClick} winningLine={winner ? calculateWinner(squares)?.winningLine : null} />
-            {/* Removed WinningLine from here; it’s in Board.js */}
           </div>
 
           <div className="score">

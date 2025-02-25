@@ -1,24 +1,39 @@
 import React, { useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import Confetti from 'react-confetti';
-import './Celebration.css'; // Import CSS for celebration animation
+import './Celebration.css';
 import nipSong from './music/nip.mp3';
-import nipviclap from './music/nipviclap.mp3'; // Import the other song
+import nipviclap from './music/nipviclap.mp3';
 
 function Celebration({ winner }) {
   useEffect(() => {
     let audio;
-    if (winner === 'X') {
+    // Check if winner includes 'X' (either as 'X' or playerXName containing 'X')
+    if (winner === 'X' || winner.includes('X')) {
       audio = new Audio(nipSong);
     } else {
       audio = new Audio(nipviclap);
     }
-    audio.play().catch(error => console.error('Error playing audio:', error));
+
+    // Attempt to play audio
+    const playAudio = async () => {
+      try {
+        await audio.play();
+        console.log('Audio playing:', winner.includes('X') ? 'nipSong' : 'nipviclap');
+      } catch (error) {
+        console.error('Error playing audio:', error);
+      }
+    };
+
+    playAudio();
 
     return () => {
-      audio.pause();
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0; // Reset to start for next play
+      }
     };
-  }, [winner]); // This effect runs whenever the 'winner' prop changes
+  }, [winner]);
 
   return (
     <div className="celebration">
@@ -27,8 +42,8 @@ function Celebration({ winner }) {
         <Confetti
           width={window.innerWidth}
           height={window.innerHeight}
-          recycle={false} // Prevents confetti from reappearing after falling off-screen
-          timeout={10000} // Duration for confetti (10 seconds)
+          recycle={false}
+          timeout={10000}
         />
       </div>
       <div className="player-wrapper">
