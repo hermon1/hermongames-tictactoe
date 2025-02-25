@@ -1,10 +1,10 @@
 import React from 'react';
 import Square from './Square';
-import WinningLine from './WinningLine'; // ✅ Import Winning Line
+import WinningLine from './WinningLine';
 
 function Board({ squares, onClick, winningLine }) {
   function renderSquare(i) {
-    const isWinningSquare = winningLine && winningLine.includes(i); // ✅ Mark winning squares
+    const isWinningSquare = winningLine && winningLine.includes(i);
     return (
       <Square
         value={squares[i]}
@@ -31,7 +31,7 @@ function Board({ squares, onClick, winningLine }) {
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      {winningLine && <WinningLine winningLine={winningLine} />} {/* ✅ Ensure WinningLine is here */}
+      {winningLine && <WinningLine winningLine={winningLine} />}
     </div>
   );
 }

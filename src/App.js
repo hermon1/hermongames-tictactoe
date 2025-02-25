@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Board from './Board';
 import Celebration from './Celebration';
 import Countdown from './Countdown';
 import useMoveHandler from './MoveHandler';
 import { calculateWinner } from './MoveHandler';
-import WinningLine from './WinningLine';
 import './styles.css';
 
 function App() {
@@ -14,6 +13,7 @@ function App() {
   const [xIsNext, setXIsNext] = useState(true);
   const [winner, setWinner] = useState(null);
   const [score, setScore] = useState({ X: 0, O: 0 });
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const { handleMove, countdown, resetHandler } = useMoveHandler(
     squares,
@@ -33,14 +33,24 @@ function App() {
     setSquares(Array(9).fill(null));
     setWinner(null);
     setXIsNext(true);
+    setShowCelebration(false);
     resetHandler();
   }
+
+  useEffect(() => {
+    if (winner && !showCelebration) {
+      const timer = setTimeout(() => {
+        setShowCelebration(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [winner, showCelebration]);
 
   return (
     <div className="App">
       <h1>Hermon Tic Tac Toe</h1>
 
-      {!winner ? (
+      {!winner || !showCelebration ? (
         <>
           <div className="player-label">
             <label style={{ color: 'red' }}>
@@ -59,7 +69,7 @@ function App() {
 
           <div className="board-container">
             <Board squares={squares} onClick={handleClick} winningLine={winner ? calculateWinner(squares)?.winningLine : null} />
-            {winner && <WinningLine winningLine={calculateWinner(squares)?.winningLine} />}
+            {/* Removed WinningLine from here; it’s in Board.js */}
           </div>
 
           <div className="score">
