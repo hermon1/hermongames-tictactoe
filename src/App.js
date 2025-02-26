@@ -16,7 +16,7 @@ function App() {
   const [showCelebration, setShowCelebration] = useState(false);
   const [audioUnlocked, setAudioUnlocked] = useState(false);
 
-  const { handleMove, countdown, resetHandler } = useMoveHandler(
+  const { handleMove, countdown, resetHandler, onCountdownComplete } = useMoveHandler(
     squares,
     setSquares,
     xIsNext,
@@ -79,7 +79,8 @@ function App() {
             </label>
           </div>
 
-          {countdown !== null && <Countdown timeLeft={countdown} />}
+          {/* Updated Countdown component with onComplete prop */}
+          {countdown !== null && <Countdown timeLeft={countdown} onComplete={onCountdownComplete} />}
 
           <div className="board-container">
             <Board squares={squares} onClick={handleClick} winningLine={winner ? calculateWinner(squares)?.winningLine : null} />

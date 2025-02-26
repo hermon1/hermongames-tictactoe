@@ -3,46 +3,33 @@ import { useState, useEffect, useCallback } from 'react';
 export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext, setWinner, setScore) {
   const [moveHistory, setMoveHistory] = useState([]);
   const [countdown, setCountdown] = useState(null);
-  const [timer, setTimer] = useState(null);
   const [gameStarted, setGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
 
   const startCountdown = useCallback(() => {
-    if (timer) clearInterval(timer);
-    setCountdown(3);
+    setCountdown(100); // Trigger a fresh 3-second countdown
+  }, []);
 
-    const activePlayer = xIsNext ? 'X' : 'O';
-
-    const newTimer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(newTimer);
-          setTimer(null);
-          setCountdown(null);
-
-          const result = calculateWinner(squares);
-          if (result) {
-            setWinner(result.winner);
-            setScore(prevScore => ({
-              ...prevScore,
-              [result.winner]: (prevScore[result.winner] || 0) + 1,
-            }));
-          } else {
-            setWinner(activePlayer);
-            setScore(prevScore => ({
-              ...prevScore,
-              [activePlayer]: (prevScore[activePlayer] || 0) + 1,
-            }));
-          }
-          setGameOver(true);
-          return null;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    setTimer(newTimer);
-  }, [squares, xIsNext, setWinner, setScore, timer]);
+  const handleCountdownComplete = useCallback(() => {
+    setCountdown(null);
+    // Determine winner as the player whose turn just ended (opposite of xIsNext)
+    const activePlayer = xIsNext ? 'O' : 'X'; // Fixed: Winner is the previous player
+    const result = calculateWinner(squares);
+    if (result) {
+      setWinner(result.winner);
+      setScore(prevScore => ({
+        ...prevScore,
+        [result.winner]: (prevScore[result.winner] || 0) + 1,
+      }));
+    } else {
+      setWinner(activePlayer);
+      setScore(prevScore => ({
+        ...prevScore,
+        [activePlayer]: (prevScore[activePlayer] || 0) + 1,
+      }));
+    }
+    setGameOver(true);
+  }, [squares, xIsNext, setWinner, setScore]);
 
   function handleMove(i) {
     if (squares[i] || gameOver) return;
@@ -75,8 +62,7 @@ export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext,
     setSquares(newSquares);
     setMoveHistory(newHistory);
 
-    if (timer) clearInterval(timer);
-    setCountdown(null);
+    setCountdown(null); // Reset before starting new countdown
 
     const result = calculateWinner(newSquares);
     if (result) {
@@ -85,13 +71,10 @@ export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext,
         ...prevScore,
         [result.winner]: (prevScore[result.winner] || 0) + 1,
       }));
-      if (timer) clearInterval(timer);
-      setTimer(null);
-      setCountdown(null);
       setGameOver(true);
     } else {
       setXIsNext(prev => !prev);
-      setTimeout(() => startCountdown(), 50);
+      setTimeout(() => startCountdown(), 0); // Start fresh countdown
     }
   }
 
@@ -99,8 +82,6 @@ export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext,
     setMoveHistory([]);
     setCountdown(null);
     setGameStarted(false);
-    if (timer) clearInterval(timer);
-    setTimer(null);
     setGameOver(false);
   }
 
@@ -111,13 +92,7 @@ export default function useMoveHandler(squares, setSquares, xIsNext, setXIsNext,
     }
   }, [moveHistory, gameStarted, startCountdown]);
 
-  useEffect(() => {
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [timer]);
-
-  return { handleMove, countdown, resetHandler };
+  return { handleMove, countdown, resetHandler: resetHandler, onCountdownComplete: handleCountdownComplete };
 }
 
 export function calculateWinner(squares) {
