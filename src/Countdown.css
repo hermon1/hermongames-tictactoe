@@ -1,50 +1,46 @@
+/* Countdown.css */
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display=swap');
+
 .countdown-container {
-    position: relative;
-    width: 220px;
-    height: 50px;
-    margin: 20px auto;
-    background: #0d0d0d;
-    border-radius: 25px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.05);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Roboto Mono', monospace;
-  }
-  
-  .progress-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: linear-gradient(90deg, #ff1a1a, #ff6666);
-    /* Removed: transition: width 3s linear; */
-    z-index: 1;
-    opacity: 0.9;
-    box-shadow: 0 0 10px rgba(255, 26, 26, 0.5);
-  }
-  
-  .countdown-text {
-    position: relative;
-    z-index: 2;
-    font-size: 24px;
-    font-weight: 600;
-    color: #ffffff;
-    text-shadow: 0 0 4px rgba(255, 26, 26, 0.6);
-    letter-spacing: 1px;
-    animation: glow 1.5s ease-in-out infinite alternate;
-  }
-  
-  @keyframes glow {
-    0% {
-      text-shadow: 0 0 4px rgba(255, 26, 26, 0.6);
-      transform: scale(1);
-    }
-    100% {
-      text-shadow: 0 0 8px rgba(255, 102, 102, 0.8);
-      transform: scale(1.02);
-    }
-  }
+  position: relative;
+  width: clamp(150px, 40vw, 220px); /* Scales from 150px to 220px */
+  height: clamp(30px, 8vh, 50px); /* Scales height */
+  margin: 2vh auto;
+  background: #0d0d0d;
+  border-radius: 25px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #ff1a1a, #ff6666);
+  z-index: 1;
+  opacity: 0.9;
+  box-shadow: 0 0 10px rgba(255, 26, 26, 0.5);
+}
+
+.countdown-text {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(14px, 3vw, 24px); /* Scales text */
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 0 4px rgba(255, 26, 26, 0.6);
+  letter-spacing: 1px;
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  0% { text-shadow: 0 0 4px rgba(255, 26, 26, 0.6); transform: scale(1); }
+  100% { text-shadow: 0 0 8px rgba(255, 102, 102, 0.8); transform: scale(1.02); }
+}

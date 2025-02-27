@@ -50,7 +50,7 @@ function Celebration({ winner, displayWinner, onRematch }) {
   console.log('Celebration Winner:', winner, 'Display Winner:', displayWinner);
 
   return (
-    <>
+    <div className="celebration-wrapper">
       <div className="confetti-container">
         <Confetti
           width={window.innerWidth}
@@ -59,7 +59,7 @@ function Celebration({ winner, displayWinner, onRematch }) {
           timeout={10000}
         />
       </div>
-      <div className="celebration">
+      <div className="celebration-content">
         <h2 className={winner === 'X' ? 'x-winner' : 'o-winner'}>{displayWinner} wins!</h2>
         <div className="player-wrapper">
           <ReactPlayer
@@ -72,7 +72,7 @@ function Celebration({ winner, displayWinner, onRematch }) {
         </div>
         <button className="rematch-button" onClick={onRematch}>Rematch</button>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -62,21 +62,28 @@ function App() {
   return (
     <div className="App">
       <h1 className="game-title">Hermon Tic Tac Toe Game</h1>
-
       {!winner || !showCelebration ? (
         <>
           <div className="player-label">
             <label className="x-label">
-              <span className="player-name">Player X </span>
-              <span className="x-score">({playerXName || 'X'})</span>:
-              <input type="text" value={playerXName} onChange={(e) => setPlayerXName(e.target.value)} />
+              <span className="player-name x-player-name">Player X</span>:
+              <input
+                type="text"
+                value={playerXName}
+                onChange={(e) => setPlayerXName(e.target.value)}
+                placeholder="Enter X Name"
+              />
             </label>
           </div>
           <div className="player-label">
             <label className="o-label">
-              <span className="player-name">Player O </span>
-              <span className="o-score">({playerOName || 'O'})</span>:
-              <input type="text" value={playerOName} onChange={(e) => setPlayerOName(e.target.value)} />
+              <span className="player-name o-player-name">Player O</span>:
+              <input
+                type="text"
+                value={playerOName}
+                onChange={(e) => setPlayerOName(e.target.value)}
+                placeholder="Enter O Name"
+              />
             </label>
           </div>
 
@@ -101,8 +108,8 @@ function App() {
         </>
       ) : (
         <Celebration
-          winner={winner} // Pass original winner ('X' or 'O')
-          displayWinner={winner === 'X' ? (playerXName || 'X') : (playerOName || 'O')} // Pass display name
+          winner={winner}
+          displayWinner={winner === 'X' ? (playerXName || 'X') : (playerOName || 'O')}
           onRematch={handleRematch}
         />
       )}

@@ -1,23 +1,120 @@
 /* styles.css */
 
-/* Keep existing board, row, square, etc. styles unchanged */
-
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
 
-/* styles.css */
+/* Base styles for responsiveness */
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2vw;
+}
 
-/* Existing board styling */
+/* Title */
+.game-title {
+  margin: 2vh 0;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(20px, 5vw, 36px);
+  font-weight: 700;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: clamp(1px, 0.5vw, 3px);
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  animation: titleBounce 1.5s infinite ease-in-out;
+}
+
+/* Hide title when celebration-wrapper is present */
+.App:has(.celebration-wrapper) .game-title {
+  display: none;
+}
+
+/* Player Labels */
+.player-label {
+  margin-bottom: 1.5vh;
+  padding: clamp(5px, 1.5vw, 15px) clamp(10px, 2vw, 15px);
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(14px, 2.5vw, 18px);
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  animation: labelPulse 2s infinite ease-in-out;
+  width: clamp(180px, 60vw, 400px);
+  overflow: hidden;
+}
+
+.player-label label {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.player-label .x-player-name {
+  color: #ff3333;
+  text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
+  margin-right: clamp(3px, 1vw, 5px);
+}
+
+.player-label .o-player-name {
+  color: #33ff33;
+  text-shadow: 0 0 5px rgba(51, 255, 51, 0.8);
+  margin-right: clamp(3px, 1vw, 5px);
+}
+
+.player-label input {
+  margin-left: clamp(5px, 1vw, 8px);
+  padding: clamp(3px, 1vw, 5px);
+  font-size: clamp(12px, 2vw, 16px);
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  width: clamp(80px, 25vw, 150px);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-label input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(10px, 1.8vw, 14px);
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* Board */
+.board-container {
+  position: relative;
+  width: clamp(250px, 80vw, 600px);
+}
+
 .board {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  height: 300px;
-  margin: auto;
+  width: 100%;
+  padding-bottom: 100%;
   background: linear-gradient(135deg, #1a1a1a, #333);
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   animation: boardPulse 2s infinite ease-in-out;
 }
 
@@ -25,23 +122,34 @@
   display: flex;
   flex: 1;
   min-height: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 33.33%;
 }
 
+.row:nth-child(1) { top: 0; }
+.row:nth-child(2) { top: 33.33%; }
+.row:nth-child(3) { top: 66.66%; }
+
 .square {
-  width: 100px;
-  height: 100px;
+  width: 33.33%;
+  height: 100%;
   border: 2px solid rgba(255, 255, 255, 0.3);
   font-family: 'Orbitron', sans-serif;
-  font-size: 48px;
+  font-size: clamp(24px, 10vw, 48px);
   font-weight: 700;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  flex: 1;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.05);
   transition: background 0.3s ease, transform 0.2s ease;
+  position: relative;
+  pointer-events: auto;
+  z-index: 1;
 }
 
 .square:hover {
@@ -60,26 +168,14 @@
 }
 
 .square.winning-square {
-  background: rgba(255, 204, 0, 0.3);
-  box-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+  /* Removed yellow background and glow */
+  /* No additional styling—just the line will show */
 }
 
-@keyframes boardPulse {
-  0% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
-  }
-  100% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
-  }
-}
-
-/* Existing score styling */
+/* Score */
 .score {
-  margin-top: 25px;
-  padding: 15px 25px;
+  margin-top: 2vh;
+  padding: clamp(10px, 2vw, 15px) clamp(15px, 3vw, 25px);
   background: linear-gradient(135deg, #1a1a1a, #333);
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
@@ -87,178 +183,172 @@
   align-items: center;
   justify-content: center;
   font-family: 'Orbitron', sans-serif;
-  font-size: 24px;
+  font-size: clamp(16px, 3vw, 24px);
   font-weight: 700;
   color: #fff;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: clamp(1px, 0.5vw, 2px);
   animation: scorePulse 2s infinite ease-in-out;
+  width: clamp(180px, 60vw, 450px);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .score span {
-  margin: 0 5px;
+  margin: 0 clamp(3px, 1vw, 5px);
 }
 
 .score .player-name.x-name {
-  font-size: 20px;
+  font-size: clamp(12px, 2vw, 20px);
   color: #ff3333;
   text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .score .player-name.o-name {
-  font-size: 20px;
+  font-size: clamp(12px, 2vw, 20px);
   color: #33ff33;
   text-shadow: 0 0 5px rgba(51, 255, 51, 0.8);
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .score .x-score,
 .score .o-score {
   color: #ffffff;
-  font-size: 28px;
+  font-size: clamp(18px, 3.5vw, 28px);
   font-weight: 900;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 .score .separator {
   color: #fff;
-  font-size: 26px;
-  margin: 0 10px;
+  font-size: clamp(16px, 3vw, 26px);
+  margin: 0 clamp(5px, 1.5vw, 10px);
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
-/* Existing player label styling */
-.player-label {
-  margin-bottom: 15px;
-  padding: 8px 15px;
-  background: linear-gradient(135deg, #1a1a1a, #333);
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
-  animation: labelPulse 2s infinite ease-in-out;
+/* Animations */
+@keyframes boardPulse {
+  0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
+  50% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2); }
+  100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
 }
 
-.player-label label {
-  display: flex;
-  align-items: center;
-  margin: 0;
-}
-
-.player-label .player-name {
-  color: #fff;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-  margin-right: 5px;
-}
-
-.player-label .x-label {
-  color: #ff3333;
-  text-shadow: 0 0 6px rgba(255, 51, 51, 0.8);
-}
-
-.player-label .o-label {
-  color: #33ff33;
-  text-shadow: 0 0 6px rgba(51, 255, 51, 0.8);
-}
-
-.player-label input {
-  margin-left: 8px;
-  padding: 5px;
-  font-size: 16px;
-  font-family: 'Orbitron', sans-serif;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
-
-.player-label input:focus {
-  border-color: #ffcc00;
-  box-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
-}
-
-/* New Title Styling */
-.game-title {
-  margin: 20px 0 25px 0; /* Space above and below */
-  font-family: 'Orbitron', sans-serif; /* Matches game theme */
-  font-size: 36px; /* Larger for prominence */
-  font-weight: 700;
-  color: #000000; /* Black text */
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Subtle black shadow for depth */
-  display: inline-block; /* Fit content */
-  animation: titleBounce 1.5s infinite ease-in-out; /* Playful bounce */
-}
-
-/* Pulse Animations */
 @keyframes scorePulse {
-  0% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
-  }
-  50% {
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
-  }
-  100% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
-  }
+  0% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
+  50% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2); }
+  100% { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1); }
 }
 
 @keyframes labelPulse {
-  0% {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05);
+  0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05); }
+  50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.1); }
+  100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05); }
+}
+
+@keyframes titleBounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+/* Responsive adjustments for all screens */
+@media (max-width: 599px) {
+  .game-title {
+    font-size: clamp(16px, 4vw, 24px);
+    margin: 1vh 0;
   }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.1);
+
+  .player-label {
+    width: clamp(150px, 85vw, 250px);
+    padding: 0.5vh 1vw;
+    font-size: clamp(12px, 3vw, 16px);
+    margin-bottom: 1vh;
   }
-  100% {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05);
+
+  .player-label input {
+    width: clamp(60px, 30vw, 100px);
+  }
+
+  .board-container {
+    width: clamp(200px, 90vw, 300px);
+  }
+
+  .score {
+    width: clamp(150px, 85vw, 300px);
+    padding: 1vh 2vw;
+    font-size: clamp(14px, 3.5vw, 20px);
+    margin-top: 1vh;
   }
 }
 
-@keyframes titlePulse {
-  0% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+@media (min-width: 600px) and (max-width: 1023px) {
+  .game-title {
+    font-size: clamp(24px, 4vw, 32px);
   }
-  50% {
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+
+  .player-label {
+    width: clamp(200px, 60vw, 350px);
+    padding: 1vh 2vw;
   }
-  100% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+
+  .player-label input {
+    width: clamp(100px, 25vw, 150px);
+  }
+
+  .board-container {
+    width: clamp(300px, 70vw, 450px);
+  }
+
+  .score {
+    width: clamp(250px, 60vw, 400px);
+    padding: 1.5vh 2.5vw;
   }
 }
 
-/* Rest of your existing styles below unchanged */
-.App {
-  text-align: center;
+@media (min-width: 1024px) {
+  .game-title {
+    font-size: clamp(32px, 3vw, 36px);
+  }
+
+  .player-label {
+    width: clamp(300px, 40vw, 400px);
+    padding: 1vh 2vw;
+  }
+
+  .player-label input {
+    width: clamp(120px, 20vw, 180px);
+  }
+
+  .board-container {
+    width: clamp(400px, 50vw, 600px);
+  }
+
+  .score {
+    width: clamp(350px, 40vw, 500px);
+    padding: 1.5vh 3vw;
+  }
 }
 
-
-
+/* Additional existing styles */
 .status {
-  margin-top: 20px;
-  font-size: 20px;
+  margin-top: clamp(10px, 2vh, 20px);
+  font-size: clamp(16px, 3vw, 20px);
 }
 
-/* ... rest of your styles ... */
 .restart {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
+  margin-top: clamp(10px, 2vh, 20px);
+  padding: clamp(8px, 1.5vw, 10px) clamp(15px, 2vw, 20px);
+  font-size: clamp(14px, 2.5vw, 16px);
   background-color: #007bff;
   color: #fff;
   border: none;
   cursor: pointer;
+  border-radius: 4px;
 }
 
 .restart:hover {
@@ -277,37 +367,16 @@
   animation: celebrate 0.5s ease-in-out;
 }
 
-.player-label {
-  margin-bottom: 10px;
-}
-
-.player-label label {
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.player-label input {
-  margin-left: 5px;
-}
-
-.player-label .playerX {
-  color: red;
-}
-
-.player-label .playerO {
-  color: green;
-}
-
 .rematch-button {
   background-color: #4caf50;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: clamp(8px, 1.5vw, 10px) clamp(15px, 2vw, 20px);
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  font-size: clamp(14px, 2.5vw, 16px);
+  margin: clamp(2px, 0.5vh, 4px) clamp(1px, 0.5vw, 2px);
   cursor: pointer;
   border-radius: 8px;
 }
@@ -317,14 +386,14 @@
 }
 
 .winner {
-  font-size: 24px;
+  font-size: clamp(18px, 3vw, 24px);
   font-weight: bold;
-  margin-top: 20px;
+  margin-top: clamp(10px, 2vh, 20px);
 }
 
 .winner-message {
-  font-size: 24px;
+  font-size: clamp(18px, 3vw, 24px);
   font-weight: bold;
   color: #333;
-  margin-top: 20px;
+  margin-top: clamp(10px, 2vh, 20px);
 }
