@@ -60,7 +60,10 @@ function Celebration({ winner, displayWinner, onRematch }) {
         />
       </div>
       <div className="celebration-content">
-        <h2 className={winner === 'X' ? 'x-winner' : 'o-winner'}>{displayWinner} wins!</h2>
+        <h2 className={winner === 'X' ? 'x-winner' : 'o-winner'}>
+          <span className="winner-name">{displayWinner}</span>
+          <span className="wins-text"> wins!</span>
+        </h2>
         <div className="player-wrapper">
           <ReactPlayer
             className="react-player"

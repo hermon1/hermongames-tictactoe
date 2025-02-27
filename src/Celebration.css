@@ -29,6 +29,7 @@
   padding: clamp(10px, 3vw, 20px);
   border-radius: 10px;
   width: clamp(200px, 60vw, 400px);
+  overflow: hidden;
 }
 
 .x-winner {
@@ -40,6 +41,10 @@
   text-transform: uppercase;
   margin: 0 0 1.5vh 0;
   animation: winnerPulse 1.5s infinite ease-in-out;
+  display: flex; /* Flex to manage name and wins! */
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap; /* Keep single line */
 }
 
 .o-winner {
@@ -51,6 +56,23 @@
   text-transform: uppercase;
   margin: 0 0 1.5vh 0;
   animation: winnerPulse 1.5s infinite ease-in-out;
+  display: flex; /* Flex to manage name and wins! */
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap; /* Keep single line */
+}
+
+.x-winner .winner-name,
+.o-winner .winner-name {
+  max-width: 70%; /* Reserve space for "wins!" */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Truncate long names */
+}
+
+.x-winner .wins-text,
+.o-winner .wins-text {
+  flex-shrink: 0; /* Prevent "wins!" from shrinking */
+  margin-left: clamp(3px, 1vw, 5px); /* Small space between name and "wins!" */
 }
 
 .rematch-button {
