@@ -5,7 +5,7 @@ import './Celebration.css';
 import nipSong from './music/nip.mp3';
 import nipviclap from './music/nipviclap.mp3';
 
-function Celebration({ winner, onRematch }) {
+function Celebration({ winner, displayWinner, onRematch }) {
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -15,18 +15,18 @@ function Celebration({ winner, onRematch }) {
       audioRef.current = null;
     }
 
-    audioRef.current = new Audio(winner === 'X' || winner.includes('X') ? nipSong : nipviclap);
+    audioRef.current = new Audio(winner === 'X' ? nipSong : nipviclap);
 
     const playAudio = async () => {
       try {
         await audioRef.current.play();
-        console.log('Audio playing:', winner.includes('X') ? 'nipSong' : 'nipviclap');
+        console.log('Audio playing:', winner === 'X' ? 'nipSong' : 'nipviclap');
       } catch (error) {
         console.error('Initial play failed:', error);
         setTimeout(async () => {
           try {
             await audioRef.current.play();
-            console.log('Retry successful:', winner.includes('X') ? 'nipSong' : 'nipviclap');
+            console.log('Retry successful:', winner === 'X' ? 'nipSong' : 'nipviclap');
           } catch (retryError) {
             console.error('Retry failed:', retryError);
           }
@@ -47,6 +47,8 @@ function Celebration({ winner, onRematch }) {
     };
   }, [winner]);
 
+  console.log('Celebration Winner:', winner, 'Display Winner:', displayWinner);
+
   return (
     <>
       <div className="confetti-container">
@@ -58,7 +60,7 @@ function Celebration({ winner, onRematch }) {
         />
       </div>
       <div className="celebration">
-        <h2 className={winner === 'X' || winner.includes('X') ? 'x-winner' : 'o-winner'}>{winner} wins!</h2>
+        <h2 className={winner === 'X' ? 'x-winner' : 'o-winner'}>{displayWinner} wins!</h2>
         <div className="player-wrapper">
           <ReactPlayer
             className="react-player"

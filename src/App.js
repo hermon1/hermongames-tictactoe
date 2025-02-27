@@ -87,7 +87,7 @@ function App() {
               squares={squares}
               onClick={handleClick}
               winningLine={winner ? calculateWinner(squares)?.winningLine : null}
-              winner={winner} // Pass winner to Board
+              winner={winner}
             />
           </div>
 
@@ -100,7 +100,11 @@ function App() {
           </div>
         </>
       ) : (
-        <Celebration winner={winner === 'X' ? playerXName || 'X' : playerOName || 'O'} onRematch={handleRematch} />
+        <Celebration
+          winner={winner} // Pass original winner ('X' or 'O')
+          displayWinner={winner === 'X' ? (playerXName || 'X') : (playerOName || 'O')} // Pass display name
+          onRematch={handleRematch}
+        />
       )}
     </div>
   );
