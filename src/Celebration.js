@@ -5,7 +5,7 @@ import './Celebration.css';
 import nipSong from './music/nip.mp3';
 import nipviclap from './music/nipviclap.mp3';
 
-function Celebration({ winner }) {
+function Celebration({ winner, onRematch }) {
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function Celebration({ winner }) {
         />
       </div>
       <div className="celebration">
-        <h2>{winner} wins!</h2>
+        <h2 className={winner === 'X' || winner.includes('X') ? 'x-winner' : 'o-winner'}>{winner} wins!</h2>
         <div className="player-wrapper">
           <ReactPlayer
             className="react-player"
@@ -68,6 +68,7 @@ function Celebration({ winner }) {
             playing
           />
         </div>
+        <button className="rematch-button" onClick={onRematch}>Rematch</button>
       </div>
     </>
   );

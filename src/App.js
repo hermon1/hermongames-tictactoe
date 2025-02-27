@@ -28,10 +28,9 @@ function App() {
   function handleClick(i) {
     if (winner || squares[i]) return;
 
-    // Unlock audio on first click if not already unlocked
     if (!audioUnlocked) {
-      const audio = new Audio(); // Dummy audio
-      audio.src = 'data:audio/mpeg;base64,/+MYxAAAAANIAAAAAExBTUUzLjEwMAQoAAAAAAAAAAAVCCQCkAABAB5t/'; // Tiny silent audio
+      const audio = new Audio();
+      audio.src = 'data:audio/mpeg;base64,/+MYxAAAAANIAAAAAExBTUUzLjEwMAQoAAAAAAAAAAAVCCQCkAABAB5t/';
       audio.play()
         .then(() => {
           setAudioUnlocked(true);
@@ -62,41 +61,47 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Hermon Tic Tac Toe</h1>
+      <h1 className="game-title">Hermon Tic Tac Toe Game</h1>
 
       {!winner || !showCelebration ? (
         <>
           <div className="player-label">
-            <label style={{ color: 'red' }}>
-              Player X ({playerXName || 'X'}):{' '}
+            <label className="x-label">
+              <span className="player-name">Player X </span>
+              <span className="x-score">({playerXName || 'X'})</span>:
               <input type="text" value={playerXName} onChange={(e) => setPlayerXName(e.target.value)} />
             </label>
           </div>
           <div className="player-label">
-            <label style={{ color: 'green' }}>
-              Player O ({playerOName || 'O'}):{' '}
+            <label className="o-label">
+              <span className="player-name">Player O </span>
+              <span className="o-score">({playerOName || 'O'})</span>:
               <input type="text" value={playerOName} onChange={(e) => setPlayerOName(e.target.value)} />
             </label>
           </div>
 
-          {/* Updated Countdown component with onComplete prop */}
           {countdown !== null && <Countdown timeLeft={countdown} onComplete={onCountdownComplete} />}
 
           <div className="board-container">
-            <Board squares={squares} onClick={handleClick} winningLine={winner ? calculateWinner(squares)?.winningLine : null} />
+            <Board
+              squares={squares}
+              onClick={handleClick}
+              winningLine={winner ? calculateWinner(squares)?.winningLine : null}
+              winner={winner} // Pass winner to Board
+            />
           </div>
 
           <div className="score">
-            Score: 
-            {playerXName || 'X'} (<span style={{ color: 'red' }}>{score.X || 0}</span>) -
-            {playerOName || 'O'} (<span style={{ color: 'green' }}>{score.O || 0}</span>)
+            <span className="player-name x-name">{playerXName || 'X'}</span>
+            <span className="x-score">{score.X || 0}</span>
+            <span className="separator">-</span>
+            <span className="player-name o-name">{playerOName || 'O'}</span>
+            <span className="o-score">{score.O || 0}</span>
           </div>
         </>
       ) : (
-        <Celebration winner={winner === 'X' ? playerXName || 'X' : playerOName || 'O'} />
+        <Celebration winner={winner === 'X' ? playerXName || 'X' : playerOName || 'O'} onRematch={handleRematch} />
       )}
-
-      {winner && <button className="rematch-button" onClick={handleRematch}>Rematch</button>}
     </div>
   );
 }

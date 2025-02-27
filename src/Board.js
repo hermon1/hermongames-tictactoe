@@ -2,7 +2,7 @@ import React from 'react';
 import Square from './Square';
 import WinningLine from './WinningLine';
 
-function Board({ squares, onClick, winningLine }) {
+function Board({ squares, onClick, winningLine, winner }) {
   function renderSquare(i) {
     const isWinningSquare = winningLine && winningLine.includes(i);
     return (
@@ -31,7 +31,7 @@ function Board({ squares, onClick, winningLine }) {
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      {winningLine && <WinningLine winningLine={winningLine} />}
+      {winningLine && <WinningLine winningLine={winningLine} winner={winner} />}
     </div>
   );
 }

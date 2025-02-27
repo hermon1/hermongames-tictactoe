@@ -1,7 +1,7 @@
 import React from 'react';
 import './WinningLine.css';
 
-const WinningLine = ({ winningLine }) => {
+const WinningLine = ({ winningLine, winner }) => {
   if (!winningLine) return null; // No winner yet
 
   // Map the winningLine array (e.g., [0, 1, 2]) to the correct index (0-7)
@@ -27,7 +27,10 @@ const WinningLine = ({ winningLine }) => {
     7: { top: '50%', left: '50%', width: '113%', height: '5px', transform: 'translate(-50%, -50%) rotate(-45deg)' }  // Diagonal /
   };
 
-  return <div className="winning-line" style={positions[lineIndex]} />;
+  // Determine class based on winner
+  const lineClass = winner === 'X' || winner.includes('X') ? 'winning-line x-line' : 'winning-line o-line';
+
+  return <div className={lineClass} style={positions[lineIndex]} />;
 };
 
 export default WinningLine;

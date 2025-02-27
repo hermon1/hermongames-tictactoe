@@ -1,156 +1,330 @@
 /* styles.css */
+
+/* Keep existing board, row, square, etc. styles unchanged */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+/* styles.css */
+
+/* Existing board styling */
 .board {
   display: flex;
   flex-direction: column;
   width: 300px;
-  height: 300px; /* Already set, keeps board square */
+  height: 300px;
   margin: auto;
-  position: relative; /* Positioning context for WinningLine */
-  overflow: hidden; /* ✅ Prevent any overflow from affecting layout */
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  animation: boardPulse 2s infinite ease-in-out;
 }
 
 .row {
   display: flex;
-  flex: 1; /* ✅ Ensure each row takes equal space (100px) */
-  min-height: 0; /* ✅ Prevent flex shrinkage issues */
+  flex: 1;
+  min-height: 0;
 }
 
 .square {
   width: 100px;
   height: 100px;
-  border: 1px solid #999;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  font-family: 'Orbitron', sans-serif;
   font-size: 48px;
+  font-weight: 700;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  flex: 1; /* ✅ Ensure squares stay fixed in size */
-  box-sizing: border-box; /* ✅ Include border in 100px size */
+  flex: 1;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.05);
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.board-container {
-  position: relative;
-}
-
-/* Rest of your styles remain unchanged */
 .square:hover {
-  background-color: #f0f0f0;
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
 }
 
 .square.X {
-  color: red;
+  color: #ff3333;
+  text-shadow: 0 0 8px rgba(255, 51, 51, 0.8);
 }
 
 .square.O {
-  color: green;
+  color: #33ff33;
+  text-shadow: 0 0 8px rgba(51, 255, 51, 0.8);
+}
+
+.square.winning-square {
+  background: rgba(255, 204, 0, 0.3);
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+}
+
+@keyframes boardPulse {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Existing score styling */
+.score {
+  margin-top: 25px;
+  padding: 15px 25px;
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: scorePulse 2s infinite ease-in-out;
+}
+
+.score span {
+  margin: 0 5px;
+}
+
+.score .player-name.x-name {
+  font-size: 20px;
+  color: #ff3333;
+  text-shadow: 0 0 5px rgba(255, 51, 51, 0.8);
+}
+
+.score .player-name.o-name {
+  font-size: 20px;
+  color: #33ff33;
+  text-shadow: 0 0 5px rgba(51, 255, 51, 0.8);
+}
+
+.score .x-score,
+.score .o-score {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 900;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.score .separator {
+  color: #fff;
+  font-size: 26px;
+  margin: 0 10px;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Existing player label styling */
+.player-label {
+  margin-bottom: 15px;
+  padding: 8px 15px;
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  animation: labelPulse 2s infinite ease-in-out;
+}
+
+.player-label label {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.player-label .player-name {
+  color: #fff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  margin-right: 5px;
+}
+
+.player-label .x-label {
+  color: #ff3333;
+  text-shadow: 0 0 6px rgba(255, 51, 51, 0.8);
+}
+
+.player-label .o-label {
+  color: #33ff33;
+  text-shadow: 0 0 6px rgba(51, 255, 51, 0.8);
+}
+
+.player-label input {
+  margin-left: 8px;
+  padding: 5px;
+  font-size: 16px;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.player-label input:focus {
+  border-color: #ffcc00;
+  box-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+}
+
+/* New Title Styling */
+.game-title {
+  margin: 20px 0 25px 0; /* Space above and below */
+  font-family: 'Orbitron', sans-serif; /* Matches game theme */
+  font-size: 36px; /* Larger for prominence */
+  font-weight: 700;
+  color: #000000; /* Black text */
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Subtle black shadow for depth */
+  display: inline-block; /* Fit content */
+  animation: titleBounce 1.5s infinite ease-in-out; /* Playful bounce */
+}
+
+/* Pulse Animations */
+@keyframes scorePulse {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+}
+
+@keyframes labelPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15), inset 0 0 5px rgba(255, 255, 255, 0.05);
+  }
+}
+
+@keyframes titlePulse {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  }
+}
+
+/* Rest of your existing styles below unchanged */
+.App {
+  text-align: center;
+}
+
+
+
+.status {
+  margin-top: 20px;
+  font-size: 20px;
 }
 
 /* ... rest of your styles ... */
-  .App {
-    text-align: center;
-  }
-  
-  .status {
-    margin-top: 20px;
-    font-size: 20px;
-  }
-  
-  .restart {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .restart:hover {
-    background-color: #0056b3;
-  }
-  
-  
-/* Add this keyframe animation for celebration */
+.restart {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.restart:hover {
+  background-color: #0056b3;
+}
+
 @keyframes celebrate {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(10deg); }
-    50% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
-    100% { transform: rotate(0deg); }
-  }
-  
-  /* Add this class to apply the celebration animation */
-  .celebrate {
-    animation: celebrate 0.5s ease-in-out;
-  }
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  50% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
 
+.celebrate {
+  animation: celebrate 0.5s ease-in-out;
+}
 
-  .player-label {
-    margin-bottom: 10px;
-  }
-  
-  .player-label label {
-    font-weight: bold;
-    margin-right: 10px;
-  }
-  
-  .player-label input {
-    margin-left: 5px;
-  }
-  
-  .player-label .playerX {
-    color: red;
-  }
-  
-  .player-label .playerO {
-    color: green;
-  }
-  
-  .score {
-    margin-top: 20px;
-    font-size: 20px;
-  }
-  
-  .score .playerX {
-    color: red;
-  }
-  
-  .score .playerO {
-    color: green;
-  }
-  
-  /* Style the parentheses */
-  .score .parentheses {
-    color: black;
-  }
-  
-  .rematch-button {
-    background-color: #4caf50; /* Green */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 8px;
-  }
-  
-  .rematch-button:hover {
-    background-color: #45a049; /* Darker green */
-  }
-  
-  .winner {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 20px;
-  }
-  
-  .winner-message {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-top: 20px;
-  }
+.player-label {
+  margin-bottom: 10px;
+}
+
+.player-label label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.player-label input {
+  margin-left: 5px;
+}
+
+.player-label .playerX {
+  color: red;
+}
+
+.player-label .playerO {
+  color: green;
+}
+
+.rematch-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.rematch-button:hover {
+  background-color: #45a049;
+}
+
+.winner {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.winner-message {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+}
